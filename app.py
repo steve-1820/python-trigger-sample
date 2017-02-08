@@ -2,6 +2,7 @@ import requests
 import sys
 import time
 
+
 def main():
     trigger_url = sys.argv[1]
     trigger_resp = requests.get(trigger_url)
@@ -46,7 +47,12 @@ def _get_result(test_run):
     }
     result_url = "{base_url}/buckets/{bucket_key}/tests/{test_id}/results/{test_run_id}".format(**opts)
     print "Getting result: {}".format(result_url)
-    result_resp = requests.get(result_url, headers={"Authorization":"Bearer {}".format(API_TOKEN)})
+
+    headers = {
+        "Authorization": "Bearer {}".format(API_TOKEN),
+        "User-Agent": "python-trigger-sample"
+    }
+    result_resp = requests.get(result_url, headers=headers)
 
     if result_resp.ok:
         return result_resp.json().get("data")
