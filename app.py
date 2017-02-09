@@ -1,6 +1,7 @@
 import requests
 import sys
 import time
+import os
 
 
 def main():
@@ -37,8 +38,12 @@ def main():
 
 def _get_result(test_run):
     # generate Personal Access Token at https://www.runscope.com/applications
-    API_TOKEN = "xxxxxxxxxxxxxxxxxxxx"
+    if not "RUNSCOPE_ACCESS_TOKEN" in os.environ:
+        print "Please set the environment variable RUNSCOPE_ACCESS_TOKEN. You can get an access token by going to https://www.runscope.com/applications"
+        exit(1)
 
+    API_TOKEN = os.environ["RUNSCOPE_ACCESS_TOKEN"]
+    
     opts = {
         "base_url": "https://api.runscope.com",
         "bucket_key": test_run.get("bucket_key"),
